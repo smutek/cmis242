@@ -1,0 +1,28 @@
+I learned a lot, and most importantly I HAVE to get started earlier.
+
+----
+I assume:
+
+- Employee Class
+  - Will need a method to convert to whole dollars
+- Saleman Class
+  - Will need a calculation method to calculate modified salary
+- Will need a file reader class
+- File will be set up as described
+- File will contain no more than 500 entries
+
+****** Main Design Decisions
+
+Salary is to be specified as whole dollars, so I am going to use ~int~ as the data type since I do not have to worry about decimals, and ~int~ is faster (I think).
+
+Stock price precision is not specified, so since this is for an executive salary I will default to choosing the most accurate data type, within reason in the context of this project. I think a double is fine in this instance.
+
+Salarys are ints, my interperetation of "whole dollar"
+
+
+I am learning excruitatingly that testing can be automated, because the code is repeating, but I can't justify writing more efficient testing tools while I still have to finish writing the main program.
+
+I am adding getters and setters for everythign as makes sense. Maybe at the end I can run coverage and remove unused methods.
+
+Using ~split()~ to tokenize because the docs reccommend it.
+https://stackoverflow.com/a/6983908

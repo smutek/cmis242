@@ -1,0 +1,839 @@
+#+Title: CMIS 242
+#+Author: Jimmy Smutek
+#+STARTUP: indent
+
+* Week One CMIS242
+** DONE Module Readings
+   CLOSED: [2018-10-26 Fri 21:19] SCHEDULED: <2018-10-25 Thu>
+*** Object Oriented Programming
+** DONE Tutorials
+CLOSED: [2018-10-28 Sun 17:43] SCHEDULED: <2018-10-26 Fri>
+*** Object Oriented Programming
+*** Classes and Objects
+** DONE Assignments [2/2]
+   CLOSED: [2018-10-28 Sun 21:45] SCHEDULED: <2018-10-28 Sun> DEADLINE: <2018-10-28 Sun>
+ - [X] Discussion: Class variables and methods
+ - [X] Quiz 1
+**** Topics to understand for Quiz 1 
+
+    - The characteristics of class constructors
+    - The differences between mutable and immutable objects and classes
+    - The differences between class (static) and instance (nonstatic) methods and data
+    - The difference between public and private instance variables
+    - The meaning and usage of the reserved word this
+    - How primitive and object parameters are implemented
+    - The difference between local and instance data with regard to scope and lifetime
+    - The mechanics of declaring and instantiating arrays of objects
+** Notes
+*** Object-Oriented Programming                           :definitions:oop:  
+**** Classes & Objects                                      :object:class:
+
+A class defines a new data type, which incorproates both data and behavior, and can be used to create objects of that type. 
+
+A class is a template for an object.
+
+General class declaration and structure is as follows:
+
+#+BEGIN_SRC java
+class ClassName { 
+   modifier type instanceVariable1; 
+   //…	
+   modifier type instanceVariableN;
+   modifier type methodName1(parameterList) { 
+          // methodBody
+   }
+   //…
+   modifier type methodNameM(parameterList) {
+          // methodBody
+   }
+}
+#+END_SRC
+
+*Variables*
+Public: Acessible throughout the program. Instance variables require qualification with the name of some object. 
+
+Private: Scoped to the methds of the class in which they are declared.
+
+*Concepts*
+***** What is an object?
+An object is a software bundle of _related state and behavior_.
+
+Objects have 2 characteristics - state and behavior. For example, DOgs have state, (name, color, breed, hungry) and behavior (barking, fetching, wagging tail)
+
+Soem examples of real world objects:
+
+| Name | State    | Behavior    |
+|------+----------+-------------|
+| Lamp | Off      | Illuminates |
+|      | On       | Charge      |
+|      | Plugged  |             |
+|      | Hi       |             |
+|      | Low      |             |
+|      | Daylight |             |
+|      |          |             |
+
+Objects store their state in fields (variables) and expose their behavior through methods (functions).
+
+Methods operate on an objects internal state and are the prmary mechanism for communication between objects.
+
+By attributing state *current speed, cadence, etc.) and providing methods for changing that state, the object controls how the outside world interacts with it. 
+
+***** What is a class?
+A class is the blueprint by which an object is constructed.
+An instance of the bicycle class might look like this:
+
+#+BEGIN_SRC java
+class Bicycle {
+
+    int cadence = 0;
+    int speed = 0;
+    int gear = 1;
+
+    void changeCadence(int newValue) {
+         cadence = newValue;
+    }
+
+    void changeGear(int newValue) {
+         gear = newValue;
+    }
+
+    void speedUp(int increment) {
+         speed = speed + increment;   
+    }
+
+    void applyBrakes(int decrement) {
+         speed = speed - decrement;
+    }
+
+    void printStates() {
+         System.out.println("cadence:" +
+             cadence + " speed:" + 
+             speed + " gear:" + gear);
+    }
+}
+#+END_SRC
+***** What is inheritance?                              :subclass:superclass:
+Inheritance provides a powerful and natural method for structering programs by allowing classes and state to inherit behavior from one another.
+
+TO carry on with the bike example - bike would be the super class of mountain bike, road bike, trick bike, etc. All are bikes and share characteristics such as 2 wheels, handlebars, etc, but mountain bikes have their own characteristics. Mountain bike would be a sub class of bike.
+
+The syntax for creating a subclass is:
+#+BEGIN_SRC java
+class MountainBike extends Bicycle {
+  // new fields and methods defining
+  // mountain bike go here
+}
+#+END_SRC
+
+***** What is an interface?
+An interface is a "contract" between a class and the outside world. When a class implements an interface, it promises to provide the behavior published by that interface.
+
+So, objects define their interaction with the outside world via the methods they expose. Methods form the objects /interface/ with the outside world. A real world example would be the buttons on the tv set.
+
+Syntax for an interface is as follows:
+#+BEGIN_SRC java
+interface Bicycle {
+  void changeCadence(int newValue);
+  void changeGear(int newValue);
+  void speedUp(int increment);
+  void applyBreaks(int decrement);
+}
+#+END_SRC
+
+In order to implement this the name of my class would change - to a particular brand of bike, for example. 
+
+#+BEGIN_SRC java
+class Hutch implements Bicycle {
+    
+    int cadence = 0;
+    int speed = 0;
+    int gear = 0;
+
+    // The compiler now will require that methods
+    // changeCadence, changeGear, speedUp and applyBreaks
+    // all be implemented. Compilation will fail if those
+    // methods are missiing from this class.
+
+    void changeCadence(int newValue) {
+         cadence = newValue;
+    }
+
+    void changeGear(int newValue) {
+         gear = newValue;
+    }
+
+    void speedUp(int increment) {
+         speed = speed + increment;   
+    }
+
+    void applyBrakes(int decrement) {
+         speed = speed - decrement;
+    }
+
+    void printStates() {
+         System.out.println("cadence:" +
+             cadence + " speed:" + 
+             speed + " gear:" + gear);
+    }  void changeCadence(int newValue) {
+    cadence = newValue;
+}
+#+END_SRC
+
+Implementing an interface allows a class to become more formal about the behavior it promises to provide. Interfaces form a contract between the class and the outside world.
+
+***** What is a package?                                        :package:
+A package is a namespace for organizing classes and interfaces ina logical manner. 
+
+A package is a namespace that organizes a related set of classes and interfaces.
+
+Java platform contains an enormous library of packages.
+***** The differences between mutable and immutable objects and classes
+
+***** The characteristics of class constructors             :constructor:
+Similar to methods, Java differentiates constructors with the same name by the number of arguments they accept and their types.  
+
+Classes contain Constructors that are invoked from the class blueprint.
+They look like method declarations, except they use the name of the class and have no return type.
+
+***** The differences between class (static) and instance (nonstatic) methods and data :members:static:instance:modifier:
+
+When a number of objects are created from the same class blueprint, they each have their own distinct copies of instance variables, stored in different memory locations.
+
+Sometimes you want to have variables that are common to all objects. This is accomplished by the ~static~ modifier.
+
+Assume you want to create a number of ~Foo~ objects and assign each an ID, starting with 1. This would be where to use a class variable.
+
+#+BEGIN_SRC java
+public class Foo {
+  // initializes a class variable to store how many foo's
+  private static int numberOfFoo = 0;
+}
+
+#+END_SRC
+
+
+***** The difference between public and private instance variables :access:
+*Public* variables are accessible from all classes.
+
+*Private* variables are accessible only within their own class.
+
+*Protected* variables are accessible only within their own class, package and subclasses.
+
+***** The meaning and usage of the reserved word this  :this:constructor:
+Within an instance method or constructor, ~this~ is a reference to the /current object/. You can refer to any member of the current object from within an instance method or a constructor by using this.
+
+The most common reason for using the ~this~ keyword is because a field is shadowed by a method or constructor parameter. For examples:
+
+#+BEGIN_SRC java
+public class Car {
+  public int gas = 0;
+  // constructor
+  public Car(int gas) {
+    this.gas = gas;
+  }
+}
+#+END_SRC 
+
+Each argument to the constructor shadows one of the objects fields - inside the constructor ~gas~ is a local copy of the constructors first argument. To refer to the ~Car~ field ~gas~ the constructor must use ~this.gas~
+
+From within a constructor you can also use the ~this~ keyword to call another constructor in the same class. Doing so is called /explicit constructor invocation/.
+#+BEGIN_SRC java
+private int gas;
+private int miles;
+
+public Car() {
+  this(0,1);
+}
+public Car(int 0, miles) {
+  this(0, miles);
+}
+public Car(int gas, int miles) {
+  this.gas = gas;
+  this.miles = miles;
+}
+#+END_SRC
+
+This class contains a set of constructors. Each constructor initializes some or all of the rectangles member variables. The constructors provide a default value for any member variable whose initial value is not provided by an argument.
+
+If present, the invocation of another constructor must be the first line in the constructor. 
+
+***** The difference between local and instance data with regard to scope and lifetime 
+
+
+
+***** How primitive and object parameters are implemented
+When I declare a parameter to a method or a constructor I provide a name for that parameter. This name is used within the method body to refer to the passed in argument. 
+
+The name of a parameter must be unique within its scope.
+It *can* have the same name as one of the class fields, but this is considered bad practice, referred to as "shadowing". Shadowing decreases code readability and should be used on in constructors. Ok, cool.
+
+Primitive data types like ~int~, or ~double~ are passed into methods by value. This means that the values of the parameters exist only within the scope of the method.
+
+Referenced data type parameters, *objects* for example, are also passed into methods by **value**. This means that when the method returns, the passed in reference still references the same object as before. The objects fields **can** be changed in the method, provided they have the proper access level.
+
+***** The mechanics of declaring and instantiating arrays of objects
+
+The ~new~ operator instantiates a class by allocating memory for a new object and returning a reference to that memory. The ~new~ operator also invokes the object constructor.
+
+The ~new~ operator requires a single, postfix argument; a call to a constructor. The name of the constructor provides the name of the class to instantiate. 
+
+The ~new~ operator returns a reference to the object it created.  this reference is usually assigned to a variable of the appropriate type.
+
+The reference returned by the new operator does not have to be assigned to a variable. It can be used directly in an expression. For example:
+#+BEGIN_SRC java
+int height = new Rectangle().height;
+#+END_SRC
+
+The Java runtime environment deletes objects when it determines they are no longer being used. You can create as many objects as you want, the Garbage Collector will take care of them.  
+
+** Discussion: Class Variables & Methods
+
+*Assignment*
+#+BEGIN_QUOTE
+Explain how class (static) variables and methods differ from their instance counterparts. Give an example of a meaningful class that contains (beside the instance variables and methods) at least one class variable and at least one class method. Explain why using a class variable and method rather than an instance variable and method would be the correct choice in the example you select.
+#+END_QUOTE
+
+*Answer*
+Static variables differ from instance variables in that instance variables each have their own unique location in memory and are associated with an instance of an object. 
+
+Static variables are associated with the /class/, they occupy one fixed location in memory, and every instance of the class shares that variable.
+
+The difference between instance and static methods follow a similar model in that static methods are not associated with any instance of the class, and can be invoked without the need for creating an instance of the class.
+
+One example of when to use a class variable and method might be:
+
+#+BEGIN_SRC java
+class Car {
+  // Class variable stores the number of cars created
+  private static int totalCarsCreated = 0;
+  // Class method allows access to totalCarsCreated without
+  // having to create an instance of the class.
+  public static int getTotalCarsCreated() {
+    return totalCarsCreated;
+  }
+
+  Car() {
+    // Constructor increments counter each time a new Car is instantiated.
+    totalCarsCreated++;
+  }
+}
+#+END_SRC  
+
+This approach is useful because it allows each new object instance to access and increment the ~totalCarsCreated~ count. The ~getTotalCarsCreated~ method allows other methods to access the current object count during runtime. 
+
+** Questions & Exercises
+
+*Questions*
+
+1. Real-world objects contain ___ and ___.
+State and behavior.
+
+2. A software object's state is stored in ___.
+Fields.
+
+3. A software object's behavior is exposed through ___.
+Methods.
+
+4. Hiding internal data from the outside world, and accessing it only through publicly exposed methods is known as data ___.
+Encapsulation.
+
+5. A blueprint for a software object is called a ___.
+Class
+
+6. Common behavior can be defined in a ___ and inherited into a ___ using the ___ keyword.
+Superclass, Subclass, extends.
+
+
+7. A collection of methods with no implementation is called an ___.
+Eh? Interface?
+
+8. A namespace that organizes classes and interfaces by functionality is called a ___.
+Package.
+
+9. The term API stands for ___?
+Application Programming Interface.
+
+*Exercises*
+
+1. Create new classes for each real-world object that you observed at the beginning of this trail. Refer to the Bicycle class if you forget the required syntax.
+
+Class for Lamp.
+#+BEGIN_SRC java
+package week_1.exercise;/*
+ * File: Lamp.java
+ * Author: Jimmy Smutek
+ * Date: 10/28/18
+ * Purpose: Class exercise.
+ */
+
+public class Lamp {
+
+  boolean lampOn = false;
+  boolean lampPlugged = false;
+
+  public boolean isLampOn() {
+    return lampOn;
+  }
+
+  public void setLampOn(boolean lampOn) {
+    this.lampOn = lampOn;
+  }
+
+  public boolean isLampPlugged() {
+    return lampPlugged;
+  }
+
+  public void setLampPlugged(boolean lampPlugged) {
+    this.lampPlugged = lampPlugged;
+  }
+
+  @Override
+  public String toString() {
+    return "Lamp{" +
+        "lampOn=" + lampOn +
+        ", lampPlugged=" + lampPlugged +
+        '}';
+  }
+}
+#+END_SRC
+
+2. For each new class that you've created above, create an interface that defines its behavior, then require your class to implement it. Omit one or two methods and try compiling. What does the error look like?
+
+*** Indications                                    :methodoloy:design:tips:
+Instructor suggests an incremantal approach to the projects, and having "meaningful operational code" as early as possible. The benefit of this is that the project makes *consistent transitions* between *tested operational states.*
+
+I think I kind of do this, but maybe not as micro as is being suggested.
+
+* Week Two CMIS242
+** CMIS 242 Week 2 Assignments [3/4]
+DEADLINE: <2018-11-04 Sun>
+- [X] Module readings
+- [X] Complete tutorial readings and exercises
+- [X] Complete weekly discussion
+- [ ] Complete and submit project 1
+** Notes
+*** Object Oriented Programming
+
+A class defines a new data type, which incorporates both data and behavior, and can be used to create objects of that type. A class is a /template/ for an object, and an object is an instance of a class.
+
+*** Inheritance and Polymorphism
+**** Inheritance 
+inheritance is the capability of a class to use the properties and methods of another class while adding its own properties and methods.
+
+The inheriting class is called the subclass. 
+The "parent" class is called the superclass.
+
+Two fundamental relationships between classes that allow code reuse are composition and specialization.
+
+***** Composition and Specialization
+****** Composition
+Composition relationships are typically characterized by a /has-a/ relationship between 2 classes.
+****** Specialization
+Specialization relationships are typically characterized by an /is-a/ relationship between 2 classes. 
+
+**** Overiding and hiding methods
+ An overriding method can return a subtype of the type returned by the overridden method. This subtype is called a covariant return type.
+
+Overriding defines in a subclass a method that has the same name, return type and argument types and order as a method already defined in the super class.
+
+An /overloaded/ method differs from the method that it overloads in the number or type of its parameters. 
+
+In overriding a method, the original method can be invoked by using:
+
+#+BEGIN_SRC java
+super.thatMethodName();
+#+END_SRC
+
+/Note/ that if the constructor calls ~super()~, it must be in the first line of code.
+
+Changes to the superclass "cascade" to the subclasses.
+
+Subclasses can interact with the superclass in the following way:
+
+*Extend* - A subclass can add new data and behavior by declaring additional instance variables and methods.
+
+*Replace* - A subclass can change existing behavior by overriding methods.
+
+*Refine* - A subclass can refine existing behavior by calling a method from the super, copying its behavior, then refining it by adding additional behavior.
+
+Example code - 
+
+*person:*
+#+BEGIN_SRC java
+//Person.java
+class Person {
+   //Static variable for counting Person instances
+   private static int idCount = 0;
+   //Instance variables
+   private Name name;     
+   private int id;        
+      //Constructor initializing instance variables with supplied names
+   public Person(String firstName, String lastName) {
+      name = new Name(firstName, lastName);     
+      id =  ++idCount;       
+   }
+   //Present a Person object as a string
+   public String toString() {    
+      return "\n\tId: " + id + name;
+   }
+   //Display the data of a Person object
+   public void display() {
+      System.out.println("<<Person>>>" + this);    
+   }
+}
+#+END_SRC
+
+*Name:*
+#+BEGIN_SRC java
+//Name.java
+public class Name {
+   private String firstName, lastName;
+   public Name() {
+      firstName = "";  
+      lastName = "";
+   }
+   public Name(String firstName, String lastName) {
+      this.firstName = firstName;
+      this.lastName = lastName;   
+   }
+   public String toString() {
+      return "\n\tName: " +  lastName + ", " + firstName;
+   }
+}
+#+END_SRC
+
+Ok, pay attention. The ~Student~ class, below, extends ~Person~ by adding ~gpa~, ~qualityPoints~, and ~credits~ instance variables and 2 methods for computing grades.
+
+It overrides the ~toString()~ and ~display()~ methods of the ~Person~ class. 
+
+So, ~Student~ *is a* ~Person~.
+#+BEGIN_SRC java
+//Student.java
+class Student extends Person {
+   private double gpa;
+   public Student(String firstName, String lastName, double gpa) {
+      super(firstName, lastName);    
+      this.gpa = gpa;
+   }
+   public String toString() {
+      return super.toString() + "\n\tGPA: " + gpa;
+   }
+   public void display() {
+      System.out.println("<<Student>>" + this);
+   }
+}
+#+END_SRC
+
+~Employee~ extends ~Person~ by adding ~salary~ instance variables and a method related to salary raise.
+
+#+BEGIN_SRC java
+class Employee extends Person {
+   private int salary;
+   public Employee (String firstName, String lastName, int salary) {
+     super(firstName, lastName);
+     this.salary = salary;
+   }
+   public String toString() {
+      return super.toString() + "\n\tSalary: " + salary;
+   }
+   public void display() {
+      System.out.println("<<Employee>>" + this);
+   }
+}
+#+END_SRC
+
+Here's an example driver program, to test all methods.
+
+#+BEGIN_SRC java
+public class TestInheritance {
+   public static void main(String[] args)  {
+      Person person = new Person("Mary", "Wisp");
+      Student student = new Student("John", "Smith", 3.76);
+      Employee employee = new Employee("George", "Brown", 40000);              
+      person.display();                     
+      student.display();                   
+      employee.display();         
+   }
+}
+#+END_SRC
+
+** Discussion
+*** TODO The Super Keyword
+#+BEGIN_QUOTE
+What does the super keyword represents and where can it be used? Give an example of a superclass and subclass. Be sure to make all the instances variables of the super class private. Include at least one constructor in each class and ensure that the constructor of the subclass calls the constructor of the superclass. Also include a toString method in both classes that returns the values of the instance variables with appropriate labels. Ensure that the toString method of subclass calls the toString method of the superclass so that the string returned contains the values of all the inherited instance variables.
+#+END_QUOTE
+
+
+**** What does the super keyword represent and where can it be used?
+
+
+The ~super~ keyword represents the originating method as declared in the corresponding superclass. It can be used in a subclass when overriding methods from the superclass. If used in a subclass constructor it must be the first line.
+
+Using the Keyword super
+https://docs.oracle.com/javase/tutorial/java/IandI/super.html
+
+For my example, I've created a simple Message class that includes fields for a title and body text.
+
+The Message superclass is extended by subclass Alert, which adds fields for setting a severity level, and flagging the message based on that level.
+
+I've attached my files and a screen shot of the program running in my IDE, IntellijIDEA.
+
+Class & Professor,
+
+Apologies for the last minute submission, this week and last. Work and life commitments have been busier than normal for the last few weeks. I don't like to participate until I've been able to read the material, and I haven't been able to get through the material until later in the week.
+
+Things have settled down, a little, and I should be able to get a earlier start on my class work moving forward. I'll continue to do my best.
+
+
+The superclass -
+
+***** Modal
+****** Fields
+modalTitle
+modalBodyText
+modalDismissText
+***** ConfirmationModal extends Modal
+****** Fields
+modalTitle
+ModalBodyText
+modalDismissText
+modalButtonOptions
+
+** Project 1
+Looks involved but not terribly complicated. Leave a little time for this and tryto make time to sketch out the program design before diving in.
+
+Now, having revisited, I think this project is about threee times larger than the final project in my last class... lol. This is exciting though! I'm going to be able to build shit at work! And at home - the project I have to build this week in my spare time is roughly the size of being able to design and build something actually useful, within a week, and to a spec. Fucking cool man!
+
+#+BEGIN_QUOTE
+The first programming project involves writing a program that computes the salaries for a collection of employees of different types. This program consists of four classes.
+#+END_QUOTE 
+
+*** Data Format:
+#+BEGIN_SRC 
+2016 Employee Smithson,John 54 2000
+2017 Salesman Jokey,Will 42 3000 136
+2017 Executive Trump,Donald 72 5000 350
+#+END_SRC
+
+*** Rubric
+**** Employee Class [0/4]
+- [ ] Contains the employee's name, age and monthly salary, which is specified in whole dollars.
+- [ ] Contains a constructor that allows the name, age and monthly salary to be initialized.
+- [ ] Contains a method named annualSalary that returns the salary for a whole year.
+- [ ] Contains a toString method that returns a string containing the name, the age and monthly salary, appropriately labeled.
+
+**** Salesman Class [0/5]
+- [ ] Is a subclass of Employee.
+- [ ] Contains an additional instance variable that contains the number of sold items.
+- [ ] Contains a constructor that allows the name, the age, monthly salary and annual sales to be initialized.
+- [ ] Contains an overridden method annualSalary that returns the salary for a whole year as indicated in the project specification.
+- [ ] Contains an overridden toString method that returns a string containing the name, the age, monthly salary and annual sales, appropriately labeled.
+
+**** Executive Class [0/5]
+- [ ] Is a subclass or Employee.
+- [ ] Contains an additional instance variable that reflects the current stock price.
+- [ ] Contains a constructor that allows the name, the age, monthly salary and stock price to be initialized.
+- [ ] Contains an overridden method annualSalary that returns the salary for a whole year as indicated in the project specification.
+- [ ] Contains an overridden toString method that returns a string containing the name, the age, monthly salary and stock price, appropriately labeled.
+
+**** P1Driver Class [0/6]
+- [ ] Contains the main method.
+- [ ] Reads in employee information from a text file.
+- [ ] As the employees are read in, Employee objects of the appropriate type are created and stored in one of two arrays depending upon the year.
+- [ ] Once all the employee data is read in, a report displays on the console for each of the two years.
+- [ ] Each line of the report contains all original data supplied for each employee together with that employee's annual salary for the year.
+- [ ] For each of the two years, the number of employees, the average of all salaries and the name of the person with the largest salary are computed and displayed.
+
+**** Test Cases [0/4]
+- [ ] Test Cases Are supplied in the form of table with five columns indicating test case objective, the input values, expected output, actual output and if the test case passed or failed.
+- [ ] Enough employees selected to completely test the program.
+- [ ] Enough test cases considered to completely test the program
+- [ ] Test cases were included in the supporting word or PDF documentation.
+
+**** Documentation and Style Guide [0/6]
+- [ ] Solution description document P1SolutionDescription includes all the required sections appropriate titled and gives relevant and meaningful details in each section.
+- [ ] Header comments include filename, author, date and brief purpose of the program.
+- [ ] In-line comments used to describe major functionality of the code.
+- [ ] The recommended Java style is used to prepare the Java code.
+- [ ] Meaningful variable names and prompts applied.
+- [ ] Declare all instance variables private. g) Avoids the duplication of code.
+ 
+*** Deliverables
+**** Overview
+***** All .java source files and the inputData.txt file (generated by me) (submit as .zip ok).
+***** The solution description document, ~P1SolutionDescription.pdf~ containing the following sections:
+****** Assumptions
+****** Test cases table
+****** Screen captures showing successful program compilation and test cases execution.
+****** Lessons learned
+
+**** Solutions Description Document
+***** Assumptions, Design Decisions, Error Handling
+****** Assumptions
+#+BEGIN_QUOTE
+Here it is expected to indicate the (technical) assumptions you have made about the project.
+
+These assumptions are actually establishing the frame of the implementation and may simplify the amount of work (code) required by the project.
+
+For example, if you need input data of type integer from a file, you may assume that data items are separated by spaces and organized on lines. This way you may use the space for tokenizing the data.
+
+However, with this assumption you have to test each token if it is an integer or not and generate an error (MalformedInputData exception) if not an integer value.
+
+By using stronger assumptions your code may be further simplified. For example, you may assume that the data items are separated by spaces, organized on lines and each data item is a valid integer value.
+
+Notes:
+1. Many times, project specifications may clearly indicate some of the assumptions.
+2. You may not assume things that contradict the specification (i.e. specification always rules).
+#+END_QUOTE
+
+I assume:
+
+- Employee Class
+  - Will need a method to convert to whole dollars
+- Saleman Class
+  - Will need a calculation method to calculate modified salary
+- Will need a file reader class
+- File will be set up as described
+- File will contain no more than 500 entries
+
+****** Main Design Decisions
+
+Salary is to be specified as whole dollars, so I am going to use ~int~ as the data type since I do not have to worry about decimals, and ~int~ is faster (I think).
+
+Stock price precision is not specified, so since this is for an executive salary I will default to choosing the most accurate data type, within reason in the context of this project. I think a double is fine in this instance. 
+
+Salarys are ints, my interperetation of "whole dollar"
+
+
+I am learning excruitatingly that testing can be automated, because the code is repeating, but I can't justify writing more efficient testing tools while I still have to finish writing the main program.
+
+I am adding getters and setters for everythign as makes sense. Maybe at the end I can run coverage and remove unused methods.
+
+Using ~split()~ to tokenize because the docs reccommend it.
+https://stackoverflow.com/a/6983908
+
+
+
+
+#+BEGIN_QUOTE
+Here you are expected to describe and give reasons for the major project specific decisions you have taken during project design and how they improve the efficiency and/or help to better organize the project.
+
+Examples of design decisions to be discussed:
+- decisions about defining classes, their instance variables and methods (public, private, inner, static/non static, describe the meaning and the role of instance variables);
+- decisions about the chosen data structures as instance variables of a class or as local variables in a method, details about the meaning and the role of instance or local variables;
+- decisions about defining helper methods;
+- decisions about method design (recursive, iterative), method parameters;
+- decisions about the chosen algorithms; -decisions about program control flow;
+#+END_QUOTE
+
+****** Error Handling
+#+BEGIN_QUOTE
+List the errors (and their types) that are considered by the program and indicate how they are handled by the program.
+#+END_QUOTE
+
+***** Test Cases Table
+#+BEGIN_QUOTE
+According to Project specifications, a table of test cases should include the test cases that you have created to test the program. The table should include 5 columns indicating (i) what aspect is tested, (ii) the input values, (iii) the expected output, (iv) the actual output and (v) if the test case passed or failed.
+Each test case will be defined in a table row.
+Below is a skeleton of a test cases table for Project1 having defined one test case (other
+relevant test cases should be defined by the students).
+#+END_QUOTE
+
+Can I finish this project?
+
+#+BEGIN_SRC java
+    String[][] dataObject = FileHandler.processFile(filePath);
+    String[][] employees;
+    String[][] y2016;
+    String[][] y2017;
+    int total2016 = 0;
+    int total2017 = 0;
+
+    for (String[] object : dataObject) {
+      if (Integer.parseInt(object[0]) == 2016) {
+        total2016++;
+      } else {
+        total2017++;
+      }
+    }
+
+    employees = new String[total2016][total2017];
+    y2016 = new String[total2016][];
+    y2017 = new String[total2017][];
+
+    int x = 0;
+    int y = 0;
+
+    for (String[] object : dataObject) {
+      if (Integer.parseInt(object[0]) == 2016) {
+        y2016[x] = object;
+        x++;
+
+
+        System.out.println();
+      } else {
+        y2017[y] = object;
+        y++;
+      }
+    }
+
+#+END_SRC
+
+I am going to rewrite the Driver - botched driver above.
+File handler below.
+
+#+BEGIN_SRC java
+static String[][] processFile(String filePath) {
+
+    String fileLine;
+    String[] fileLines = new String[MAX_RECORDS];
+    String[][] splitLines = new String[MAX_RECORDS][];
+    String[][] dataObject = new String[ROWS][MAX_RECORDS];
+    int[] rowCount = new int[ROWS];
+    BufferedReader inputStream = null;
+    int totalLines = 0;
+
+    try {
+      // Create a buffered reader
+      inputStream = new BufferedReader(new java.io.FileReader(filePath));
+
+      while ((fileLine = inputStream.readLine()) != null) {
+        // Tokenize each line
+        String[] splitLine = fileLine.split(" ");
+
+        int yearsIndex = 0;
+
+        // for year in available years
+        for (int availableYear : YEARS) {
+          // cast year from the file  as int, to compare it to availableYear
+          int fileYear = Integer.parseInt(splitLine[0]);
+          if (fileYear == availableYear) {
+            rowCount[yearsIndex]++;
+            break;
+          } else {
+            yearsIndex++;
+          }
+        }
+        fileLines[totalLines] = fileLine;
+        splitLines[totalLines] = fileLines[totalLines].split(" ");
+        // increment counter i
+        totalLines++;
+      }
+
+
+    } catch (IOException io) {
+      System.out.println("File read error: " + io.getMessage());
+    } finally {
+      try {
+        if (inputStream != null) {
+          inputStream.close();
+        }
+      } catch (IOException io) {
+        System.out.println("Problem closing stream: " + io.getMessage());
+      }
+    }
+    return splitLines;
+  }
+#+END_SRC
+
+
