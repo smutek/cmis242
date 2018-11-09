@@ -2,7 +2,7 @@
 #+Author: Jimmy Smutek
 #+STARTUP: indent
 
-* Week One CMIS242
+* Week One
 ** DONE Module Readings
    CLOSED: [2018-10-26 Fri 21:19] SCHEDULED: <2018-10-25 Thu>
 *** Object Oriented Programming
@@ -404,7 +404,7 @@ Instructor suggests an incremantal approach to the projects, and having "meaning
 
 I think I kind of do this, but maybe not as micro as is being suggested.
 
-* Week Two CMIS242
+* Week Two
 ** CMIS 242 Week 2 Assignments [3/4]
 DEADLINE: <2018-11-04 Sun>
 - [X] Module readings
@@ -835,5 +835,215 @@ static String[][] processFile(String filePath) {
     return splitLines;
   }
 #+END_SRC
+
+* Week Three
+** Reading
+*** What's an exception?
+Java uses exceptions to handle errors and other exceptional events. An exception is an ecvent that happens during program execution that "disrupts the normal flow of instructions".
+
+*** Throwing an exception 
+When an error occurs in a program, the method in whch the error occurs creates an object and hands it off to the runtime system. This object contains information about the erorr including the method in which it occurrs and the state of the program when the error occurred. 
+
+The creation of this object and the subsequent handoff to the runt ime system is called /throwing and exception/.
+*** Call Stack
+Once the method has throwing an exception, the runtime system tries to find something to handle it. The "list of somethings" is the ordered list of methods that occurred up until the error. This is the call stack. It's all the methods that have been called. Hence, call stack.
+
+#+DOWNLOADED: file:/Users/jimmysmutek/Code/school/cmis242/resources/week_3/exceptions-callstack.gif @ 2018-11-08 19:29:09
+[[file:Week%20Three/exceptions-callstack_2018-11-08_19-29-09.gif]] 
+https://docs.oracle.com/javase/tutorial/essential/exceptions/definition.html
+*Call Stack*
+
+*** Exception Handler
+The runtime system searches the call stack for a mthod that contains a block of code that can handle the exception. This block of code is called the /exception handler/.
+
+The chosen exception handler is said to /catch the exception/. If the program /exhaustively/ searches all the methods on the call stack without finding an exception handler the runtime system terminates. Ie. the program crashes. 
+
+#+DOWNLOADED: file:/Users/jimmysmutek/Code/school/cmis242/resources/week_3/exceptions-errorOccurs.gif @ 2018-11-08 19:49:54
+[[file:Week%20Three/exceptions-errorOccurs_2018-11-08_19-49-54.gif]]
+*Searching the callstack for an exception handler*
+https://docs.oracle.com/javase/tutorial/figures/essential/exceptions-errorOccurs.gif
+
+I picture a robot receiving instructions from a person, being unable to perform the task because a door is locked, or something, going back to get instructions on what to do next, being unable to fuind anyone to supply said instructions, and explodign. Or something like that. It was much funnier in my head. 
+
+*** Catch or Specify
+
+Valid Java code /must/ honor the /Catch or Specify Requirement/. (Java Docs)
+https://docs.oracle.com/javase/tutorial/essential/exceptions/catchOrDeclare.html
+
+This means code that "may throw certain exceptions" must be enclosed by either:
+
+- A try statemenmt that catches the exception. The ~try~ must provide a handler. 
+- A method that specifies it can throw the exception. 
+ 
+*** Exception Types
+**** Checked Exception                                     :catch:specify:
+These are exceptions that "a well written application should antitipate and recover from". For example, a check for a missing file.
+
+Checked exceptions are subject to the Catch and Specify Requirement.
+
+Great example, from class readings - 
+#+BEGIN_QUOTE
+For example, if you use FileReader class in your program to read data from a file, if the file specified in its constructor doesn't exist, then a FileNotFoundException occurs, and the compiler prompts the programmer to handle the exception.
+#+END_QUOTE
+http://www.tutorialspoint.com/java/java_exceptions.htm
+
+**** Error                                           :unchecked:exception:
+Errors are exceptions that are external to te application. They are things that /usually/ the application cannot anticipate or recover from. An example would be openign a file but then can't read it because of a hardware or system malfunction, (Java docs)
+
+Errors are not subject to the Catch and Specify Requirement.
+
+**** Runtime Exception                               :unchecked:exception:
+
+These are exceptions /internal/ to the application that the application usually cannot anticipate or recover from. This usually includes things like logic and programming bugs.
+
+Runtime exceptions are not subject to the Catch and Specify Requirement because while you can create a handler for the error, it usually makes more sense to just fix the bug.
+
+Errors and runtime exceptions are collectively known as unchecked exceptions. 
+
+**** Examples
+
+#+BEGIN_SRC java
+// Note: This class will not compile yet.
+import java.io.*;
+import java.util.List;
+import java.util.ArrayList;
+
+public class ListOfNumbers {
+
+    private List<Integer> list;
+    private static final int SIZE = 10;
+
+    public ListOfNumbers () {
+        list = new ArrayList<Integer>(SIZE);
+        for (int i = 0; i < SIZE; i++) {
+            list.add(new Integer(i));
+        }
+    }
+
+    public void writeList() {
+	// The FileWriter constructor throws IOException, which must be caught.
+        PrintWriter out = new PrintWriter(new FileWriter("OutFile.txt"));
+
+        for (int i = 0; i < SIZE; i++) {
+            // The get(int) method throws IndexOutOfBoundsException, which must be caught.
+            out.println("Value at: " + i + " = " + list.get(i));
+        }
+        out.close();
+    }
+}
+#+END_SRC
+*** Catch Blocks
+#+BEGIN_QUOTE
+The catch block contains code that is executed if and when the exception handler is invoked. The runtime system invokes the exception handler when the handler is the first one in the call stack whose ExceptionType matches the type of the exception thrown. The system considers it a match if the thrown object can legally be assigned to the exception handler's argument.
+#+END_QUOTE
+https://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html
+*** Finally Blocks
+#+BEGIN_QUOTE
+The finally block always executes when the try block exits. This ensures that the finally block is executed even if an unexpected exception occurs. But finally is useful for more than just exception handling — it allows the programmer to avoid having cleanup code accidentally bypassed by a return, continue, or break. Putting cleanup code in a finally block is always a good practice, even when no exceptions are anticipated.
+#+END_QUOTE
+https://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html
+*** Exception Hierarchy                                         :throwable:
+
+All exception classes are subclasses of the ~java.lang.Exception~ class. The exception class is a subclass of the ~Throwable~ class. 
+
+~Error~ is another ~Throwable~ subclass.
+
+Exception class has 2 main subclasses: ~IOException~ and ~RuntimeException~
+**** Exceptions Diagram
+[[file:Week%20Three/exceptions1_2018-11-09_20-04-07.jpg]]
+http://www.tutorialspoint.com/java/java_exceptions.htm
+
+#+DOWNLOADED: file:/Users/jimmysmutek/Code/school/cmis242/resources/week_3/exceptions1.jpg @ 2018-11-09 20:04:07
+
+
+*** Exceptions Methods                                          :throwable:
+
+Important methods available in ~Throwable~
+(tutorialspoint)
+|--------+---------------------------------------------------|
+| Sr.No. | Method & Description                              |
+|--------+---------------------------------------------------|
+|      1 | ~public String getMessag()~                       |
+|        | Returns a detailed message about the exception    |
+|        | that has occurred. Initialized in the ~Throwable~ |
+|        | constructor.                                      |
+|--------+---------------------------------------------------|
+|      2 | ~public Throwable getCause()~                     |
+|        | Returns the cause of the exception as represented |
+|        | by the ~Throwable~ object.                        |
+|--------+---------------------------------------------------|
+|      3 | ~public String toString()~                        |
+|        | Returns the name of the class concatenated with   |
+|        | the result of ~getMessage()~                      |
+|--------+---------------------------------------------------|
+|      4 | ~public void printStackTrace()~                   |
+|        | Prints the result of ~toString()~ along with the  |
+|        | stack trace to ~System.err~, the error output     |
+|        | stream.                                           |
+|--------+---------------------------------------------------|
+|      5 | ~public StackTraceElement[] getStackTrace()~      |
+|        | Returns an array containing each element on the   |
+|        | stack trace. The element at index 0 represents    |
+|        | the top of the call stack, and the last element   |
+|        | in the array represents the method at the bottom  |
+|        | of the call stack.                                |
+|--------+---------------------------------------------------|
+|      6 | ~public Throwable fillInStackTrace()~             |
+|        | Fills the stack trace of this ~Throwable~ object  |
+|        | with the current stack trace.                     |
+|--------+---------------------------------------------------|
+http://www.tutorialspoint.com/java/java_exceptions.htm
+
+** Discussion
+#+BEGIN_QUOTE
+What is exception propagation? Give an example of a class that contains at least two methods, in which one method calls another. Ensure that the subordinate method will call a predefined Java method that can throw a checked exception. The subordinate method should not catch the exception. Explain how exception propagation will occur in your example.
+#+END_QUOTE
+
+Exception propogation happens when an "exceptional event", ie. any event which disrupts the normal flow of instructions, occurs during program execution. This "exceptional event" is called and excveptionm, and exception propogation is the runtime systems sequential traversal, from the point in the call stack where the error occurred back through each of the preceeding methods until it either finds a handler to catch the exception or terminates.
+
+
+
+An exception handler is a block of code that has been written to handle these exceptional events if they do occur. 
+
+Exception propogation The call stack is the list of methods that were invoked up until the point where the error occurs, and exception propogation is essentially the runtime system "walking backwards", method by method, until it hits a handler. If the runtime does not find an applicable handler it terminates.    
+
+Exception propogation is the runtime systems sequential traversal, method by method, from the pont where the exceptional event occurred to the point where a handler is found to catch the exception. If a handler is not found the runtime moves on to the next previous method and continues until it finds a handler or terminates.
+
+I picture this as a robot who has instructions to move through a series of doors. If the door is closed the robot can open it. 
+
+*** Class Robot 
+Location -
+Name -  
+*** Class Door
+position
+*** Class ClosedDoor
+extends door
+isClosed
+*** Class LockedDoor
+extends door
+isLocked
+IsCLosed
+
+A class that contains atleast 2 methods, in which one method calls another.
+
+
+Class Voter.
+
+String Name
+Int Age
+
+
+If Age = 18 + 
+
+Create registered voter
+
+
+
+
+
+
+
+
+
 
 
