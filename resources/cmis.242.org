@@ -1047,3 +1047,17 @@ Create registered voter
 
 
 
+* Week Four
+** GUIS
+
+Java Abstract Window Toolkit (AWT) is the library for creatng GUI's, but it is platform dependent and not good for creating complex GUI's. The ~Swing~ components are "built on" AWT to implement and extend its functionality. All Swing classes are written entirely in Java and thus are platform independent.
+
+*** Frames and Panels
+In Java a window is called a frame. Frames contain a content pane, and GUI componenets get added to the content pane.
+
+** Graphics
+
+
+
+
+
