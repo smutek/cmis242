@@ -1037,16 +1037,6 @@ If Age = 18 +
 
 Create registered voter
 
-
-
-
-
-
-
-
-
-
-
 * Week Four
 ** GUIS
 
@@ -1057,7 +1047,33 @@ In Java a window is called a frame. Frames contain a content pane, and GUI compo
 
 ** Graphics
 
+From Prof Ioan -
+#+BEGIN_QUOTE
+This week discussion requires to create a small Swing-based GUI which is a good hands-on exercise aiming at preparing the students for Project 2.
 
+Beside the teaching materials posted in our class, below please find some web sites with simple and relevant GUI examples, that can be used for reference.
 
+https://beginnersbook.com/2015/07/java-swing-tutorial/
+https://www.roseindia.net/java/example/java/swing/
+https://practice-programming.blogspot.ro/2013/08/simple-calculator-using-swing-package.html
+http://www.codejava.net/java-se/swing/jframe-basic-tutorial-and-examples
 
+A step by step Java Swing programming of a simple calculator (please also check the comments):
+http://www.dreamincode.net/forums/topic/321933-creating-a-calculator-using-jframe/
+
+Other Java Swing programs of simple calculators:
+https://examples.javacodegeeks.com/desktop-java/swing/java-swing-calculator-example
+http://www.javacodex.com/Swing/Calculator
+#+END_QUOTE
+
+** Tutorials
+*** Creating a GUI w/ JFC/Swing
+Swing APIis huge, but most programs only use a small subset.
+
+Per the Oracle tutorial,
+
+Step 1 - Build the GUI
+Step 2 - Register event listeners
+Step 3 - Add programming logic
+** Discussion
 
