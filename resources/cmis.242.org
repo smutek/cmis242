@@ -1076,4 +1076,82 @@ Step 1 - Build the GUI
 Step 2 - Register event listeners
 Step 3 - Add programming logic
 ** Discussion
+#+BEGIN_QUOTE
+Give an example of a program that creates a Swing based GUI with at least one button, one group of radio-buttons and several textfields. Some of the textfields should be for input and others for output. Make the output textfields uneditable. 
+
+When the button is clicked, the input fields should be read, some calculation will be performed and the result will be displayed in the output textfield(s). 
+
+For example, the GUI may have an input textfield for circle radius, an output textfiled for result, a button Calculate and a group of two radio buttons: Area and Perimeter. 
+
+When Calculate button is clicked, the radius value is read and the area or perimeter is calculated (based on the active radio-button) and displayed in the output textfield.
+#+END_QUOTE
+*** Create Swing Based GUI
+**** Requirements [/]
+- [ ] At least one button
+- [ ] At least one group of radio buttons
+- [ ] Input text fields
+- [ ] Uneditable output text fields for displayed
+**** App Idea
+Hours worked.
+Enter start timne
+Enter enter end time
+choose break or working
+display time entry as percentage of 37.5 hours
+
+HoursWorked.java
+
+Time Entry (input) 
+Start time Field
+End time Field
+
+Option type (radio)
+Work - adds to percentage of
+Break - tracked does not add
+
+Display (text fields)
+Entries
+Hours worked
+Breaks
+Percentage of
+
+Logic
+Accept 2 time objects
+Calculate duration
+Update constant
+Calculate percentage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
