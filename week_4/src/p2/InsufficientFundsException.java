@@ -6,6 +6,15 @@ package p2;
  * Purpose: Checked exception class for account fund levels
  */
 
-public class InsufficientFundsException {
+public class InsufficientFundsException extends Exception {
 
+  public InsufficientFundsException() {}
+
+  public InsufficientFundsException(String message) {
+    super(message);
+  }
+
+  public InsufficientFundsException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

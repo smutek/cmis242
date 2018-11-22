@@ -6,22 +6,7 @@ package p2;
  * Purpose: Create and manage Account objects
  */
 
-import java.text.NumberFormat;
-
 public class Account {
-
-  /*
-  2. Class Account must have a constructor with one parameter representing the initial deposit
-  plus four methods that correspond to each of the four buttons in the GUI.
-  It must also incorporate logic to deduct a service charge of $1 when three total withdrawals
-  are made from either account. Note that this means, for example, if one withdraw is made from
-  the checking and one from the savings, any withdrawal from either account thereafter incurs the
-  service charge. After the charge, the counter of withdrawals is reset.
-  The methods that perform the withdrawals and transfers must throw an InsufficientFundsException
-  exception whenever an attempt is made to withdraw or transfer more funds than are
-  available in the account. Note that when service charges apply, there must also be sufficient
-  funds to pay for that charge.
-   */
 
   // Accounts have a balance
   private double actBalance;
@@ -30,7 +15,6 @@ public class Account {
   private int actType;
   // Service charge
   private static int withdraws;
-  private boolean chargesApply;
   private static final int SER_CHARGE = 1;
   // Service charge threshold
   private static final int THRESHOLD = 3;
@@ -61,8 +45,12 @@ public class Account {
     return actBalance;
   }
 
-  private void setActBalance(double actBalance) {
-    this.actBalance = actBalance;
+  private void setActBalance(double actBalance) throws InsufficientFundsException {
+    if (actBalance < 0) {
+      throw new InsufficientFundsException("Insufficient Funds.");
+    } else {
+      this.actBalance = actBalance;
+    }
   }
 
   int getActType() {
@@ -106,8 +94,15 @@ public class Account {
    * @return String response message
    */
   String depositToAccount(double amount) {
-    this.setActBalance(this.getActBalance() + amount);
-    return "Deposit successful.";
+    String response = "";
+    try {
+      this.setActBalance(this.getActBalance() + amount);
+      response = "Deposit Successful.";
+    } catch (InsufficientFundsException ex) {
+      response = ex.getMessage();
+    } finally {
+      return response;
+    }
   }
 
   /**
@@ -116,39 +111,53 @@ public class Account {
    * @param amount double
    * @return String response
    */
-  String withdrawFromAccount(double amount) {
+  String withdrawFromAccount(double amount) throws InsufficientFundsException {
     double current = this.getActBalance();
     double adjusted = current - amount;
     String response = null;
 
     if (!requiresServiceCharge()) {
       this.setActBalance(adjusted);
+      response = "Transaction successful.";
       withdraws++;
-      response = "No Service charge. ";
     } else {
       this.setActBalance((adjusted - SER_CHARGE));
-      response = "Service charge added.";
+      response = "Transaction successful. Service charge added.";
       withdraws = 0;
     }
     return response;
   }
 
+  /**
+   * Account transfer
+   * @param amount double
+   * @param to Account
+   * @return String response
+   */
   String requestTransfer(double amount, Account to) {
 
     // Is the amount a multiple of 10?
     if (amount % 10 != 0) {
       return "Please enter a multiple of ten";
     }
+
+    String response = "";
     // Try to remove the funds from this account
     double current = to.getActBalance();
     double adjusted = current - amount;
-    if (adjusted >= 0) {
+
+    try {
       to.setActBalance(adjusted);
-      this.setActBalance(this.getActBalance() + amount);
-      return "Good to go";
-    } else {
-      return "lol";
+    } catch (InsufficientFundsException m) {
+      response = m.getMessage();
+    } finally {
+      try {
+        this.setActBalance(this.getActBalance() + amount);
+      } catch (InsufficientFundsException m) {
+      response = m.getMessage();
+      }
     }
+    return response;
   }
 
   /**

@@ -10,7 +10,6 @@ package p2;
  *
  */
 
-import java.math.RoundingMode;
 import java.text.NumberFormat;
 import javax.swing.*;
 import java.awt.*;
@@ -152,14 +151,23 @@ public class P2GUI extends JFrame implements ActionListener {
     // String title of the active account
     String strActive = TYPES[active.getActType()];
     // Resulting response message from the transaction attempt
-    String transactionResponse;
+    String transactionResponse = "";
 
     switch (type) {
       case "Withdraw":
-        transactionResponse = active.withdrawFromAccount(amount);
+        try {
+          transactionResponse = active.withdrawFromAccount(amount);
+        } catch (InsufficientFundsException m) {
+          transactionResponse = m.getMessage();
+        } finally {
+          displayMssg(
+              transactionResponse
+                  + "\nAccount Balance: "
+                  + dollarFormat.format(active.balanceCheck()));
+        }
         break;
       case "Deposit":
-        transactionResponse = active.depositToAccount(amount);
+        displayMssg(active.depositToAccount(amount));
         break;
       case "Transfer To":
         transactionResponse = active.requestTransfer(amount, inactive);
@@ -171,11 +179,8 @@ public class P2GUI extends JFrame implements ActionListener {
         displayMssg(transactionResponse);
         break;
       default:
-        transactionResponse = "Something went wrong.";
+        displayMssg("Something went wrong.");
     }
-    System.out.println(transactionResponse);
-    System.out.println(actChecking.toDisplay());
-    System.out.println(actSavings.toDisplay());
   }
 
   /**
