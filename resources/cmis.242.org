@@ -1037,6 +1037,114 @@ If Age = 18 +
 
 Create registered voter
 
+* Week Four
+** GUIS
+
+Java Abstract Window Toolkit (AWT) is the library for creatng GUI's, but it is platform dependent and not good for creating complex GUI's. The ~Swing~ components are "built on" AWT to implement and extend its functionality. All Swing classes are written entirely in Java and thus are platform independent.
+
+*** Frames and Panels
+In Java a window is called a frame. Frames contain a content pane, and GUI componenets get added to the content pane.
+
+** Graphics
+
+From Prof Ioan -
+#+BEGIN_QUOTE
+This week discussion requires to create a small Swing-based GUI which is a good hands-on exercise aiming at preparing the students for Project 2.
+
+Beside the teaching materials posted in our class, below please find some web sites with simple and relevant GUI examples, that can be used for reference.
+
+https://beginnersbook.com/2015/07/java-swing-tutorial/
+https://www.roseindia.net/java/example/java/swing/
+https://practice-programming.blogspot.ro/2013/08/simple-calculator-using-swing-package.html
+http://www.codejava.net/java-se/swing/jframe-basic-tutorial-and-examples
+
+A step by step Java Swing programming of a simple calculator (please also check the comments):
+http://www.dreamincode.net/forums/topic/321933-creating-a-calculator-using-jframe/
+
+Other Java Swing programs of simple calculators:
+https://examples.javacodegeeks.com/desktop-java/swing/java-swing-calculator-example
+http://www.javacodex.com/Swing/Calculator
+#+END_QUOTE
+
+** Tutorials
+*** Creating a GUI w/ JFC/Swing
+Swing APIis huge, but most programs only use a small subset.
+
+Per the Oracle tutorial,
+
+Step 1 - Build the GUI
+Step 2 - Register event listeners
+Step 3 - Add programming logic
+** Discussion
+#+BEGIN_QUOTE
+Give an example of a program that creates a Swing based GUI with at least one button, one group of radio-buttons and several textfields. Some of the textfields should be for input and others for output. Make the output textfields uneditable. 
+
+When the button is clicked, the input fields should be read, some calculation will be performed and the result will be displayed in the output textfield(s). 
+
+For example, the GUI may have an input textfield for circle radius, an output textfiled for result, a button Calculate and a group of two radio buttons: Area and Perimeter. 
+
+When Calculate button is clicked, the radius value is read and the area or perimeter is calculated (based on the active radio-button) and displayed in the output textfield.
+#+END_QUOTE
+*** Create Swing Based GUI
+**** Requirements [/]
+- [ ] At least one button
+- [ ] At least one group of radio buttons
+- [ ] Input text fields
+- [ ] Uneditable output text fields for displayed
+**** App Idea
+Hours worked.
+Enter start timne
+Enter enter end time
+choose break or working
+display time entry as percentage of 37.5 hours
+
+HoursWorked.java
+
+Time Entry (input) 
+Start time Field
+End time Field
+
+Option type (radio)
+Work - adds to percentage of
+Break - tracked does not add
+
+Display (text fields)
+Entries
+Hours worked
+Breaks
+Percentage of
+
+Logic
+Accept 2 time objects
+Calculate duration
+Update constant
+Calculate percentage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
