@@ -18,16 +18,18 @@ import java.awt.event.*;
 
 public class P2GUI extends JFrame implements ActionListener {
 
-  private static final ButtonGroup PANELGROUP = new ButtonGroup();
-  private static final ButtonGroup RADIOGROUP = new ButtonGroup();
-  private static final JRadioButton CHECKING = new JRadioButton("Checking");
-  private static final JRadioButton SAVINGS = new JRadioButton("Checking");
+  private static final ButtonGroup PANEL_GROUP = new ButtonGroup();
+  private static final ButtonGroup RADIO_GROUP = new ButtonGroup();
+  private static final String[] TYPES = {"Checking", "Savings"};
 
   private static JFormattedTextField inputField = new JFormattedTextField();
 
   private NumberFormat dollarFormat;
   private NumberFormat inputFormat;
-  private NumberFormat transferFormat;
+
+  private Account actChecking = new Account();
+  private Account actSavings = new Account(500, 1);
+  private Account[] accounts = {actChecking, actSavings};
 
   /**
    * Constructor
@@ -51,18 +53,19 @@ public class P2GUI extends JFrame implements ActionListener {
     pane.setPreferredSize(new Dimension(420, 250));
     pane.setBackground(Color.lightGray);
 
+    // Set up number formats
     setupFormats();
 
     // ************ Set up String values
     String[] buttonText = {"Withdraw", "Deposit", "Transfer To", "Balance"};
     String[] radioText = {"Checking", "Savings"};
     JButton[] panelButtons = new JButton[4];
+    JRadioButton[] radioButtons = new JRadioButton[2];
 
-    // ************ Set up fields
+    // ************ Set up Input field
     inputField = new JFormattedTextField(inputFormat);
     inputField.setValue(00.00);
     inputField.setColumns(20);
-    inputField.addActionListener(this);
 
     // ************ Look and feel
     final Color colorBG = Color.lightGray;
@@ -74,7 +77,7 @@ public class P2GUI extends JFrame implements ActionListener {
     for (int i = 0; i <= 3; i++) {
       buttonPanel.add(panelButtons[i] = new JButton(buttonText[i]));
       panelButtons[i].addActionListener(this);
-      PANELGROUP.add(panelButtons[i]);
+      PANEL_GROUP.add(panelButtons[i]);
     }
     buttonPanel.setLayout(new GridLayout(2, 2));
     buttonPanel.setBorder(BorderFactory.createLineBorder(colorBorder, padSm));
@@ -88,13 +91,11 @@ public class P2GUI extends JFrame implements ActionListener {
 
     // ************ Create and add account radio button panel
     final JPanel radioPanel = new JPanel();
-    CHECKING.setSelected(true);
-    CHECKING.addActionListener(this);
-    SAVINGS.addActionListener(this);
-    radioPanel.add(CHECKING);
-    radioPanel.add(SAVINGS);
-    RADIOGROUP.add(CHECKING);
-    RADIOGROUP.add(SAVINGS);
+    for (int i = 0; i <= 1; i++) {
+      radioPanel.add(radioButtons[i] = new JRadioButton(radioText[i]));
+      RADIO_GROUP.add(radioButtons[i]);
+    }
+    RADIO_GROUP.getElements().nextElement().setSelected(true);
     radioPanel.setLayout(new GridLayout(1, 2));
     radioPanel.setBorder(BorderFactory.createLineBorder(colorBorder, padSm));
     radioPanel.setBackground(colorBG);
@@ -116,8 +117,6 @@ public class P2GUI extends JFrame implements ActionListener {
   private void setupFormats() {
     inputFormat = NumberFormat.getNumberInstance();
     dollarFormat = NumberFormat.getCurrencyInstance();
-    transferFormat = NumberFormat.getNumberInstance();
-    transferFormat.setRoundingMode(RoundingMode.HALF_DOWN);
   }
 
   /** Create and show the application GUI */
@@ -141,20 +140,52 @@ public class P2GUI extends JFrame implements ActionListener {
     // Get event type from button click
     String type = event.getActionCommand();
     int amount = (((Number) (inputField.getValue())).intValue());
+    Account active, inactive;
+    // Store values for active/inactive button state
+    if (RADIO_GROUP.getElements().nextElement().isSelected()) {
+      active = accounts[0];
+      inactive = accounts[1];
+    } else {
+      active = accounts[1];
+      inactive = accounts[0];
+    }
+    // String title of the active account
+    String strActive = TYPES[active.getActType()];
+    // Resulting response message from the transaction attempt
+    String transactionResponse;
 
-    // Get event source
     switch (type) {
-      case "Checking":
-        System.out.println("Account type set to checking");
+      case "Withdraw":
+        transactionResponse = active.withdrawFromAccount(amount);
         break;
-      case "Savings":
-        System.out.println("Account type set to savings.");
+      case "Deposit":
+        transactionResponse = active.depositToAccount(amount);
+        break;
+      case "Transfer To":
+        transactionResponse = active.requestTransfer(amount, inactive);
+        displayMssg(transactionResponse);
+        break;
+      case "Balance":
+        transactionResponse =
+            strActive + " Account Balance: \n" + dollarFormat.format(active.balanceCheck());
+        displayMssg(transactionResponse);
         break;
       default:
-        System.out.println("Transaction type: " + type);
+        transactionResponse = "Something went wrong.";
     }
-    // Get text box contents
-    System.out.println(amount);
+    System.out.println(transactionResponse);
+    System.out.println(actChecking.toDisplay());
+    System.out.println(actSavings.toDisplay());
+  }
+
+  /**
+   * Display a JOptionPane with an alert dialogue
+   *
+   * @param message String
+   */
+  private void displayMssg(String message) {
+    JOptionPane.showMessageDialog(
+        null, message, "System Response", JOptionPane.INFORMATION_MESSAGE);
   }
 
   /**
