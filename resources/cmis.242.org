@@ -1155,3 +1155,55 @@ Calculate percentage
 
 
 
+* Week Something
+** Project Three
+*** P3GUI [0/10]
+- [ ] Defines the Swing GUI. 
+
+- [ ] Contains a pair of radio buttons allowing the user to choose whether an iterative or recursive method is used to compute the term of the sequence. 
+
+- [ ] Allows the user to enter a value for n and click the Compute button, to display the nth term of the sequence in the Result field. 
+
+- [ ] User input value is checked and warning message is displayed if the entered value is not a positive integer. 
+
+- [ ] Allows the Efficiency field to contain the number of calls to the recursive method when the recursive option is chosen and the number of iterations of the loop when the iterative option is selected. 
+
+- [ ] The Iterative radio button is initially selected. 
+
+- [ ] When the window is closed, the efficiency values computes with values of n from 0 to 20 and writes them to a file. 
+
+- [ ] Each line of the output file contains the value of n, the efficiency of the iterative method for that value of n and the efficiency of the recursive method. 
+
+- [ ] The values of the output file are separated by commas so the file can be opened with Excel.
+
+- [ ] Provides an event handler to handle the Compute button click and another handler will be needed to produce the file described above when the window is closed. The latter handler is an object of an inner class that extends the WindowAdapter class.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

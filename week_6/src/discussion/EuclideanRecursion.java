@@ -22,6 +22,20 @@ public class EuclideanRecursion {
   4. Repeat until the remainder r= 0, at which point the C=GCD is a
   */
 
+  private static int iterativeGCD(int larger, int smaller) {
+    // The iterative version uses a while loop to evaluate the value
+    // of "smaller". It requires a temporary variable be used in order that
+    // the larger variable may be swapped with the smaller,      and the smaller
+    // variable with the remainder.
+    while (smaller != 0) {
+      int temp = smaller;
+      smaller = larger % smaller;
+      larger = temp;
+    }
+    // Once the smaller number reaches zero, return the larger
+    return larger;
+  }
+
   private static int recursiveGCD(int larger, int smaller) {
 
     // Here's the base case. The program will stop when the smaller number
@@ -39,23 +53,22 @@ public class EuclideanRecursion {
     }
   }
 
-  private static int iterativeGCD(int larger, int smaller) {
-    // The iterative version uses a while loop to evaluate the value
-    // of "smaller". It requires a temporary variable be used in order that
-    // the larger variable may be swapped with the smaller, and the smaller
-    // variable with the remainder.
-    while (smaller != 0) {
-      int temp = smaller;
-      smaller = larger % smaller;
-      larger = temp;
-    }
-    // Once the smaller number reaches zero, return the larger
-    return larger;
-  }
-
   public static void main(String[] args) {
-    System.out.println("49 & 21");
-    System.out.println("Recursive: " + recursiveGCD(49, 21));
-    System.out.println("Iterative: " + iterativeGCD(49, 21));
+
+    int[][] sets = {
+      {25527, 53667},
+      {53667, 25527},
+      {192, 270},
+      {270, 192},
+      {21, 49},
+      {49, 21}
+    };
+
+    for (int set[] : sets) {
+      int a = set[0], b = set[1];
+      System.out.println(a + " & " + b);
+      System.out.println("Recursive: " + recursiveGCD(a, b));
+      System.out.println("Iterative: " + iterativeGCD(a, b));
+    }
   }
 }
