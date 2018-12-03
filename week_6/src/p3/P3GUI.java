@@ -14,30 +14,43 @@ import java.awt.event.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 
 public class P3GUI extends JFrame implements ActionListener {
   /*
   *** P3GUI [0/10]
 
-  @todo- Allows the user to enter a value for n and click the Compute button, to display the nth term of the sequence in the Result field.
+  @todo- Allows the user to enter a value for n and click the Compute button, to display the
+  nth term of the sequence in the Result field.
 
-  @todo- User input value is checked and warning message is displayed if the entered value is not a positive integer.
+  @todo- User input value is checked and warning message is displayed if the entered value is not
+  a positive integer.
 
-  @todo- Allows the Efficiency field to contain the number of calls to the recursive method when the recursive option is chosen and the number of iterations of the loop when the iterative option is selected.
+  @todo- Allows the Efficiency field to contain the number of calls to the recursive method when
+  the recursive option is chosen and the number of iterations of the loop when the iterative option
+  is selected.
 
-  @todo- When the window is closed, the efficiency values computes with values of n from 0 to 20 and writes them to a file.
+  @todo- When the window is closed, the efficiency values computes with values of n from 0 to 20
+  and writes them to a file.
 
-  @todo- Each line of the output file contains the value of n, the efficiency of the iterative method for that value of n and the efficiency of the recursive method.
+  @todo- Each line of the output file contains the value of n, the efficiency of the iterative
+  method for that value of n and the efficiency of the recursive method.
 
   @todo- The values of the output file are separated by commas so the file can be opened with Excel.
-
-  @todo- Provides an event handler to handle the Compute button click and another handler will be needed to produce the file described above when the window is closed. The latter handler is an object of an inner class that extends the WindowAdapter class.
 
   @todo- Remove remaining todo's before turning in
    */
 
+  // ************ Generic Counter @todo- Remove before turning in
+  private static int COUNT = 0;
+
   // ************ Radio button group
   private static final ButtonGroup OPTION_GROUP = new ButtonGroup();
+
+  // ************ Fields
+  private JFormattedTextField inputField;
+  private JFormattedTextField resultField;
+  private JFormattedTextField efficiencyField;
 
   // ************ Strings for the labels
   private static final String[] IO_STRINGS = {"Iterative", "Recursive"};
@@ -122,7 +135,7 @@ public class P3GUI extends JFrame implements ActionListener {
     OPTION_GROUP.getElements().nextElement().setSelected(true);
 
     // ************ Add input field & submit button
-    JFormattedTextField inputField = new JFormattedTextField(dataFormat);
+    inputField = new JFormattedTextField(dataFormat);
     inputField.setValue(0);
     inputField.setColumns(FIELD_WIDTH);
     add(inputField, c);
@@ -134,22 +147,32 @@ public class P3GUI extends JFrame implements ActionListener {
     c.gridy++;
 
     // ************ Add output fields
-    for (int i = 0; i <= 1; i++) {
-      JFormattedTextField formattedTextField = new JFormattedTextField(dataFormat);
-      formattedTextField.setValue(0);
-      formattedTextField.setColumns(FIELD_WIDTH);
-      formattedTextField.setEditable(false);
-      add(formattedTextField, c);
-      c.gridy++;
-    }
+    // Results
+    resultField = new JFormattedTextField(dataFormat);
+    resultField.setValue(0);
+    resultField.setColumns(FIELD_WIDTH);
+    resultField.setEditable(false);
+    add(resultField, c);
+    c.gridy++;
+    // Efficiency
+    efficiencyField = new JFormattedTextField(dataFormat);
+    efficiencyField.setValue(0);
+    efficiencyField.setColumns(FIELD_WIDTH);
+    efficiencyField.setEditable(false);
+    add(efficiencyField, c);
+    c.gridy++;
+
+
+
 
     // ************ Add Window listener
-    addWindowListener(new WindowAdapter(){
-      public void windowClosing(WindowEvent e) {
-        System.out.println("Write the file");
-        dispose();
-      }
-    });
+    addWindowListener(
+        new WindowAdapter() {
+          public void windowClosing(WindowEvent e) {
+            System.out.println("Write the file");
+            dispose();
+          }
+        });
   }
 
   /** Set up Number formats */
@@ -168,18 +191,57 @@ public class P3GUI extends JFrame implements ActionListener {
     // Display the window
     frame.pack();
     frame.setVisible(true);
-
   }
 
   /**
    * Action event listener
+   *
    * @param event ActionEvent (button click)
    */
   public void actionPerformed(ActionEvent event) {
     String type = event.getActionCommand();
 
+    /*
+    When the button is clicked:
+    1. Get the value of the input field
+    2. validate the input, should be whole positive int
+    3. Get the state of the radio buttons
+    4. Pass the input off to the corresponding method
+    5. Get the method return
+    6. Update the output fields
+     */
 
-    System.out.println(type);
+    // Get the value of the input field
+    int inputValue = (((Number) (inputField.getValue())).intValue());
+
+    // Validate the input
+
+    // Get the radio button state
+    for (Enumeration<AbstractButton> buttons = OPTION_GROUP.getElements();
+        buttons.hasMoreElements(); ) {
+      AbstractButton button = buttons.nextElement();
+      if (button.isSelected()) {
+        System.out.println(button.getText());
+        if (button.getText().equalsIgnoreCase("Iterative")) {
+          Sequence.computeIterative(inputValue);
+        } else {
+          Sequence.computeRecursive(inputValue);
+        }
+      }
+      resultField.setValue(inputValue);
+      efficiencyField.setValue(COUNT);
+      COUNT++;
+    }
+  }
+
+  /**
+   * Display a JOptionPane with an alert dialogue
+   *
+   * @param message String
+   */
+  private void displayMssg(String message) {
+    JOptionPane.showMessageDialog(
+        null, message, "System Response", JOptionPane.INFORMATION_MESSAGE);
   }
 
   /**
