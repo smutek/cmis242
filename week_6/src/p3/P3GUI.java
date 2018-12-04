@@ -6,43 +6,14 @@ package p3;
  * Purpose: Defines the Swing GUI
  */
 
-import java.net.SocketOption;
 import java.text.NumberFormat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.event.ActionListener;
-import java.util.Enumeration;
 
 public class P3GUI extends JFrame implements ActionListener {
-  /*
-  *** P3GUI [0/10]
-
-  @todo- Allows the user to enter a value for n and click the Compute button, to display the
-  nth term of the sequence in the Result field.
-
-  @todo- User input value is checked and warning message is displayed if the entered value is not
-  a positive integer.
-
-  @todo- Allows the Efficiency field to contain the number of calls to the recursive method when
-  the recursive option is chosen and the number of iterations of the loop when the iterative option
-  is selected.
-
-  @todo- When the window is closed, the efficiency values computes with values of n from 0 to 20
-  and writes them to a file.
-
-  @todo- Each line of the output file contains the value of n, the efficiency of the iterative
-  method for that value of n and the efficiency of the recursive method.
-
-  @todo- The values of the output file are separated by commas so the file can be opened with Excel.
-
-  @todo- Remove remaining todo's before turning in
-   */
-
-  // ************ Generic Counter @todo- Remove before turning in
-  private static int COUNT = 0;
 
   // ************ Radio button group
   private static final ButtonGroup OPTION_GROUP = new ButtonGroup();
@@ -58,14 +29,9 @@ public class P3GUI extends JFrame implements ActionListener {
 
   // ************ Color palette
   private static final Color PANE_BG = Color.lightGray;
-  private static final Color BORDER_COLOR = Color.gray;
-  private static final Color FIELD_BG = Color.white;
-  private static final Color TEXT_COLOR = Color.darkGray;
 
   // ************ Global sizing units
-  private static final int PAD_1 = 1;
   private static final int PAD_2 = 2;
-  private static final int PAD_4 = 4;
   private static final int PAD_10 = 10;
   private static final int FIELD_WIDTH = 12;
 
@@ -110,7 +76,7 @@ public class P3GUI extends JFrame implements ActionListener {
 
     // ************ Create and add Labels
     for (int i = 0; i <= 2; i++) {
-      // Skip after the first loop iteration, in order to account for
+      // Increment twice, but only  after the first loop iteration, in order to account for
       // the submit button
       if (i == 1) c.gridy++;
       // Create the label
@@ -162,9 +128,6 @@ public class P3GUI extends JFrame implements ActionListener {
     add(efficiencyField, c);
     c.gridy++;
 
-
-
-
     // ************ Add Window listener
     addWindowListener(
         new WindowAdapter() {
@@ -199,7 +162,7 @@ public class P3GUI extends JFrame implements ActionListener {
    * @param event ActionEvent (button click)
    */
   public void actionPerformed(ActionEvent event) {
-    String type = event.getActionCommand();
+    Sequence.resetEfficiency();
 
     /*
     When the button is clicked:
@@ -211,37 +174,17 @@ public class P3GUI extends JFrame implements ActionListener {
     6. Update the output fields
      */
 
-    // Get the value of the input field
     int inputValue = (((Number) (inputField.getValue())).intValue());
+    int outputValue;
 
-    // Validate the input
-
-    // Get the radio button state
-    for (Enumeration<AbstractButton> buttons = OPTION_GROUP.getElements();
-        buttons.hasMoreElements(); ) {
-      AbstractButton button = buttons.nextElement();
-      if (button.isSelected()) {
-        System.out.println(button.getText());
-        if (button.getText().equalsIgnoreCase("Iterative")) {
-          Sequence.computeIterative(inputValue);
-        } else {
-          Sequence.computeRecursive(inputValue);
-        }
-      }
-      resultField.setValue(inputValue);
-      efficiencyField.setValue(COUNT);
-      COUNT++;
+    if (OPTION_GROUP.getElements().nextElement().isSelected()) {
+      outputValue = Sequence.computeIterative(inputValue);
+    } else {
+      outputValue = Sequence.computeRecursive(inputValue);
     }
-  }
 
-  /**
-   * Display a JOptionPane with an alert dialogue
-   *
-   * @param message String
-   */
-  private void displayMssg(String message) {
-    JOptionPane.showMessageDialog(
-        null, message, "System Response", JOptionPane.INFORMATION_MESSAGE);
+    resultField.setValue(outputValue);
+    efficiencyField.setValue(Sequence.getEfficiency());
   }
 
   /**
