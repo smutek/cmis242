@@ -1154,7 +1154,6 @@ Calculate percentage
 
 
 
-
 * Week Something
 ** Project Three
 *** P3GUI [0/10]
@@ -1177,31 +1176,104 @@ Calculate percentage
 - [ ] The values of the output file are separated by commas so the file can be opened with Excel.
 
 - [ ] Provides an event handler to handle the Compute button click and another handler will be needed to produce the file described above when the window is closed. The latter handler is an object of an inner class that extends the WindowAdapter class.
+* Week 7
+** TODO [0/1]
+- [0/3] Discussion
+  - [ ] Post
+  - [ ] Response
+  - [ ] Response
+- [ ] Quiz
+** Discussion
+#+BEGIN_QUOTE
+The syntax of generic classes and methods was not added until version 5.0 of Java. Nonetheless, early versions of the language had collections classes such as an array list, or a linked list which were able to store objects, instances of different classes.
+a. How were those classes implemented without the generic syntax?
+b. Give an example of a program that uses the non-generic version of a class and the equivalent program that uses the generic version. How do the two implementations differ?
+c. Why is having the syntax of generics better? Explain and illustrate with a method of the example class.
+#+END_QUOTE
+*** Generics
+#+BEGIN_QUOTE
+Introduced in J2SE 5.0, this long-awaited enhancement to the type system allows a type or method to operate on objects of various types while providing compile-time type safety. It adds compile-time type safety to the Collections Framework and eliminates the drudgery of casting
+#+END_QUOTE
+https://docs.oracle.com/javase/tutorial/extra/generics/index.html
 
 
+**** From Java Docs:
+https://docs.oracle.com/javase/tutorial/extra/generics/legacy.html
+***** Using Legacy Code in Generic Code
 
+How can you use old code, while still enjoying the benefits of generics in your own code?
 
+As an example, assume you want to use the package com.Example.widgets. The folks at Example.com market a system for inventory control, highlights of which are shown below:
+#+BEGIN_SRC java
+package com.Example.widgets;
 
+public interface Part {...}
 
+public class Inventory {
+    /**
+     * Adds a new Assembly to the inventory database.
+     * The assembly is given the name name, and 
+     * consists of a set parts specified by parts. 
+     * All elements of the collection parts
+     * must support the Part interface.
+     **/ 
+    public static void addAssembly(String name, Collection parts) {...}
+    public static Assembly getAssembly(String name) {...}
+}
 
+public interface Assembly {
+    // Returns a collection of Parts
+    Collection getParts();
+}
+#+END_SRC
 
+Now, you'd like to add new code that uses the API above. It would be nice to ensure that you always called addAssembly() with the proper arguments - that is, that the collection you pass in is indeed a Collection of Part. Of course, generics are tailor made for this:
 
+#+BEGIN_SRC java
+package com.mycompany.inventory;
 
+import com.Example.widgets.*;
 
+public class Blade implements Part {
+    ...
+}
 
+public class Guillotine implements Part {
+}
 
+public class Main {
+    public static void main(String[] args) {
+        Collection<Part> c = new ArrayList<Part>();
+        c.add(new Guillotine()) ;
+        c.add(new Blade());
+        Inventory.addAssembly("thingee", c);
+        Collection<Part> k = Inventory.getAssembly("thingee").getParts();
+    }
+}
+#+END_SRC
+When we call addAssembly, it expects the second parameter to be of type Collection. The actual argument is of type Collection<Part>. This works, but why? After all, most collections don't contain Part objects, and so in general, the compiler has no way of knowing what kind of collection the type Collection refers to.
 
+In proper generic code, Collection would always be accompanied by a type parameter. When a generic type like Collection is used without a type parameter, it's called a raw type.
 
+Most people's first instinct is that Collection really means Collection<Object>. However, as we saw earlier, it isn't safe to pass a Collection<Part> in a place where a Collection<Object> is required. It's more accurate to say that the type Collection denotes a collection of some unknown type, just like Collection<?>.
 
+But wait, that can't be right either! Consider the call to getParts(), which returns a Collection. This is then assigned to k, which is a Collection<Part>. If the result of the call is a Collection<?>, the assignment would be an error.
 
+In reality, the assignment is legal, but it generates an unchecked warning. The warning is needed, because the fact is that the compiler can't guarantee its correctness. We have no way of checking the legacy code in getAssembly() to ensure that indeed the collection being returned is a collection of Parts. The type used in the code is Collection, and one could legally insert all kinds of objects into such a collection.
 
+So, shouldn't this be an error? Theoretically speaking, yes; but practically speaking, if generic code is going to call legacy code, this has to be allowed. It's up to you, the programmer, to satisfy yourself that in this case, the assignment is safe because the contract of getAssembly() says it returns a collection of Parts, even though the type signature doesn't show this.
 
+So raw types are very much like wildcard types, but they are not typechecked as stringently. This is a deliberate design decision, to allow generics to interoperate with pre-existing legacy code.
 
+Calling legacy code from generic code is inherently dangerous; once you mix generic code with non-generic legacy code, all the safety guarantees that the generic type system usually provides are void. However, you are still better off than you were without using generics at all. At least you know the code on your end is consistent.
 
+At the moment there's a lot more non-generic code out there then there is generic code, and there will inevitably be situations where they have to mix.
 
+If you find that you must intermix legacy and generic code, pay close attention to the unchecked warnings. Think carefully how you can justify the safety of the code that gives rise to the warning.
 
+What happens if you still made a mistake, and the code that caused a warning is indeed not type safe? Let's take a look at such a situation. In the process, we'll get some insight into the workings of the compiler.
 
-
+_END Java Docs_
 
 
 
