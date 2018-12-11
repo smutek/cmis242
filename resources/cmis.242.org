@@ -1,6 +1,7 @@
 #+Title: CMIS 242
 #+Author: Jimmy Smutek
 #+STARTUP: indent
+#+STARTUP: hidestars
 
 * Week One
 ** DONE Module Readings
@@ -1153,7 +1154,6 @@ Calculate percentage
 
 
 
-
 * Week Something
 ** Project Three
 *** P3GUI [0/10]
@@ -1274,6 +1274,34 @@ If you find that you must intermix legacy and generic code, pay close attention 
 What happens if you still made a mistake, and the code that caused a warning is indeed not type safe? Let's take a look at such a situation. In the process, we'll get some insight into the workings of the compiler.
 
 _END Java Docs_
+* Week 8
+** Tutorials [/]
+- [ ] Set implementations
+- [ ]  Map implementations
+** Discussion
+#+BEGIN_QUOTE
+Array lists and linked lists are both implementations of lists. Give an example of a situation where an array list would be the better choice and one where a linked list would. Explain the reasons in each case.
+#+END_QUOTE
+** Project [/]
+- [ ] Review project
+- [ ] Sketch program design
+- [ ] Build Swing GUI
+- [ ] Implement database
+- [ ] Implement program logic
+- [ ] Build test classes
+- [ ] Write solutions document
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
